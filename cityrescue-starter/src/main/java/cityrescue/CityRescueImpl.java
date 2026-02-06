@@ -2,6 +2,7 @@ package cityrescue;
 
 import cityrescue.enums.*;
 import cityrescue.exceptions.*;
+import CityMap, Incident, Station, Unit
 
 /**
  * CityRescueImpl (Starter)
@@ -19,148 +20,143 @@ public class CityRescueImpl implements CityRescue {
     public char[][] grid = new int[width][height]; // creates the grid
 
     public ArrayList<String> stations = new ArrayList<>; //variable array for station names
-    public String[] units = {"AMBULANCE", "FIRE_ENGINE", "POLICE_CAR"};
-    public String[] incidents = {"MEDICAL", "FIRE", "CRIME"};
 
     public int tick = 0
     public int counters = 0
 
-    @Override
+    @Override //1
     public void initialise(int width, int height) throws InvalidGridException {
-        // TODO: implement
         grid = int[width][height];
         tick = 0
         //throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //2
     public int[] getGridSize() {
-        // TODO: implement
         return {width, height}
         //throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //3
     public void addObstacle(int x, int y) throws InvalidLocationException {
-        // TODO: implement
         if (0 <= x < width) & (0 <= y < height) {
             grid[x][y] = char "X";
         }
         //throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //4
     public void removeObstacle(int x, int y) throws InvalidLocationException {
-        // TODO: implement
         if (0 <= x < width) & (0 <= y < height) {
             grid[x][y] = char "";
         }
         //throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //5
     public int addStation(String name, int x, int y) throws InvalidNameException, InvalidLocationException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        Station newStation = new Station(name, x, y);
+        return(newStation.getID();)
+        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //6
     public void removeStation(int stationId) throws IDNotRecognisedException, IllegalStateException {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //7
     public void setStationCapacity(int stationId, int maxUnits) throws IDNotRecognisedException, InvalidCapacityException {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //8
     public int[] getStationIds() {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //9
     public int addUnit(int stationId, UnitType type) throws IDNotRecognisedException, InvalidUnitException, IllegalStateException {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //10
     public void decommissionUnit(int unitId) throws IDNotRecognisedException, IllegalStateException {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //11
     public void transferUnit(int unitId, int newStationId) throws IDNotRecognisedException, IllegalStateException {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //12
     public void setUnitOutOfService(int unitId, boolean outOfService) throws IDNotRecognisedException, IllegalStateException {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //13
     public int[] getUnitIds() {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //14
     public String viewUnit(int unitId) throws IDNotRecognisedException {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //15
     public int reportIncident(IncidentType type, int severity, int x, int y) throws InvalidSeverityException, InvalidLocationException {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //16
     public void cancelIncident(int incidentId) throws IDNotRecognisedException, IllegalStateException {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //17
     public void escalateIncident(int incidentId, int newSeverity) throws IDNotRecognisedException, InvalidSeverityException, IllegalStateException {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //18
     public int[] getIncidentIds() {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //19
     public String viewIncident(int incidentId) throws IDNotRecognisedException {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //20
     public void dispatch() {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //21
     public void tick() {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    @Override
+    @Override //22
     public String getStatus() {
         // TODO: implement
         throw new UnsupportedOperationException("Not implemented yet");

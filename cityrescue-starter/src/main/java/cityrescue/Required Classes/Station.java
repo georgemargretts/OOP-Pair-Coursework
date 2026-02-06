@@ -6,6 +6,7 @@ public class Station{
     public String name;
     public int location;
     public int capacity = 1;
+    public int current_no_held = 0;
     public int ID = 1++;
 
     // Constructor
@@ -23,5 +24,11 @@ public class Station{
         return ID
     }
     
+    public isEmpty() { //returns if the station is empty or not
+        if (current_no_held == 0);
+            return true;
+        else;
+            return false;
+    }
 
 }
