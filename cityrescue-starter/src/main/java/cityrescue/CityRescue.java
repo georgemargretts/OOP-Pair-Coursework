@@ -4,17 +4,21 @@ import cityrescue.enums.*;
 import cityrescue.exceptions.*;
 
 public interface CityRescue {
+    // Creates grid off given input size
     void initialise(int width, int height) throws InvalidGridException;
     int[] getGridSize();
 
+    // Creates obstacles
     void addObstacle(int x, int y) throws InvalidLocationException;
     void removeObstacle(int x, int y) throws InvalidLocationException;
 
+    // Makes station (Creates station, removes stations, decides its capacity, lists stations)
     int addStation(String name, int x, int y) throws InvalidNameException, InvalidLocationException;
     void removeStation(int stationId) throws IDNotRecognisedException, IllegalStateException;
     void setStationCapacity(int stationId, int maxUnits) throws IDNotRecognisedException, InvalidCapacityException;
     int[] getStationIds();
 
+    // Manages rescue vechiles (Adds units, removes units, move between stations, marks available and unavailable, lists units, view details)
     int addUnit(int stationId, UnitType type) throws IDNotRecognisedException, InvalidUnitException, IllegalStateException;
     void decommissionUnit(int unitId) throws IDNotRecognisedException, IllegalStateException;
     void transferUnit(int unitId, int newStationId) throws IDNotRecognisedException, IllegalStateException;
@@ -22,11 +26,13 @@ public interface CityRescue {
     int[] getUnitIds();
     String viewUnit(int unitId) throws IDNotRecognisedException;
 
+    // Handles emergencies (Reports incidents, cancel incidents, increase severity, lists incidents, view details)
     int reportIncident(IncidentType type, int severity, int x, int y) throws InvalidSeverityException, InvalidLocationException;
     void cancelIncident(int incidentId) throws IDNotRecognisedException, IllegalStateException;
     void escalateIncident(int incidentId, int newSeverity) throws IDNotRecognisedException, InvalidSeverityException, IllegalStateException;
     int[] getIncidentIds();
     String viewIncident(int incidentId) throws IDNotRecognisedException;
+
 
     void dispatch();
     void tick();
