@@ -12,29 +12,50 @@ import cityrescue.exceptions.*;
 public class CityRescueImpl implements CityRescue {
 
     // TODO: add fields (map, arrays for stations/units/incidents, counters, tick, etc.)
+    // We need to create attributes here
+
+    public int width = 1; //sets width
+    public int height = 1; //sets height
+    public char[][] grid = new int[width][height]; // creates the grid
+
+    public ArrayList<String> stations = new ArrayList<>; //variable array for station names
+    public String[] units = {"AMBULANCE", "FIRE_ENGINE", "POLICE_CAR"};
+    public String[] incidents = {"MEDICAL", "FIRE", "CRIME"};
+
+    public int tick = 0
+    public int counters = 0
 
     @Override
     public void initialise(int width, int height) throws InvalidGridException {
         // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        grid = int[width][height];
+        tick = 0
+        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
     public int[] getGridSize() {
         // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        return {width, height}
+        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
     public void addObstacle(int x, int y) throws InvalidLocationException {
         // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (0 <= x < width) & (0 <= y < height) {
+            grid[x][y] = char "X";
+        }
+        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
     public void removeObstacle(int x, int y) throws InvalidLocationException {
         // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (0 <= x < width) & (0 <= y < height) {
+            grid[x][y] = char "";
+        }
+        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
