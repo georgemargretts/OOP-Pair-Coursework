@@ -4,6 +4,8 @@ import cityrescue.enums.*;
 import cityrescue.exceptions.*;
 import CityMap, Incident, Station, Unit
 
+import java.util.ArrayList;
+
 /**
  * CityRescueImpl (Starter)
  *
@@ -24,25 +26,24 @@ public class CityRescueImpl implements CityRescue {
     public int tick = 0
     public int counters = 0
 
+    public 
+
     @Override //1
     public void initialise(int width, int height) throws InvalidGridException {
         grid = int[width][height];
         tick = 0
-        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override //2
     public int[] getGridSize() {
         return {width, height}
-        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override //3
     public void addObstacle(int x, int y) throws InvalidLocationException {
         if (0 <= x < width) & (0 <= y < height) {
-            grid[x][y] = char "X";
+            grid[x][y] = 'X';
         }
-        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override //4
@@ -50,37 +51,66 @@ public class CityRescueImpl implements CityRescue {
         if (0 <= x < width) & (0 <= y < height) {
             grid[x][y] = char "";
         }
-        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override //5
     public int addStation(String name, int x, int y) throws InvalidNameException, InvalidLocationException {
         Station newStation = new Station(name, x, y);
+        grid[x][y] = 
         return(newStation.getID();)
-        //throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override //6
     public void removeStation(int stationId) throws IDNotRecognisedException, IllegalStateException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        //loop through the entire grid to find the station
+        for (int i=0; i < width; i++) {
+            for (int j=0; j < width; j++) {
+                // if it is a station
+                if (grid[i][j] instanceof Station) {
+                    // check if it is empty
+                    if (grid[i][j].isEmpty() == true) {
+                        grid[i][j] = 'S';
+                    }
+                }
+            }
+        }
     }
 
     @Override //7
     public void setStationCapacity(int stationId, int maxUnits) throws IDNotRecognisedException, InvalidCapacityException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        //loop through the entire grid to find the station
+        for (int i=0; i < width; i++) {
+            for (int j=0; j < width; j++) {
+                // if it is a station
+                if (grid[i][j] instanceof Station) {
+                    // check capacity > 0 and chosen new max units > current units
+                    if (grid[i][j].getMaxUnits() > 0) && (grid[i][j].getCurrentUnits() < maxUnits) {
+                        grid[i][j].setCapacity(maxUnits);
+                    }
+                }
+            }
+        }
     }
 
     @Override //8
     public int[] getStationIds() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        ArrayList<String> list_of_ids = new ArrayList<>();
+        //loop through the entire grid to find the station
+        for (int i=0; i < width; i++) {
+            for (int j=0; j < width; j++) {
+                // if it is a station
+                if (grid[i][j] instanceof Station) {
+                    // add to list
+                    list_of_ids.add(grid[i][j].getID());
+                }
+            }
+        list_of_ids.sort();
+        System.out.println(list_of_ids);
     }
 
     @Override //9
     public int addUnit(int stationId, UnitType type) throws IDNotRecognisedException, InvalidUnitException, IllegalStateException {
-        // TODO: implement
+        
         throw new UnsupportedOperationException("Not implemented yet");
     }
 

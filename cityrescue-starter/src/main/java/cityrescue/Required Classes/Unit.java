@@ -8,7 +8,7 @@ public class Unit {
     public String type = "N/A";
     public int HOME = "N/A";
     public int[] LOC = {};
-    public String STATUS = "IDLE";
+    public UnitStatus STATUS = UnitStatus.IDLE; //uses the enum
     public String INCIDENT = "0";
     public String WORK = "0";
 

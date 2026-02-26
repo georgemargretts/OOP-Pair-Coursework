@@ -31,4 +31,12 @@ public class Station{
             return false;
     }
 
+    public getMaxUnits() { //returns the capacity
+        return capacity;
+    }
+
+    public getCurrentUnits() {
+        return current_no_held;
+    }
+
 }
