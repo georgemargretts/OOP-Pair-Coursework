@@ -14,6 +14,10 @@ import java.util.ArrayList;
  */
 public class CityRescueImpl implements CityRescue {
 
+    public static void main(String[] args) {
+        System.out.println("Hello");
+    }
+
     // TODO: add fields (map, arrays for stations/units/incidents, counters, tick, etc.)
     // We need to create attributes here
 
@@ -23,25 +27,26 @@ public class CityRescueImpl implements CityRescue {
 
     public ArrayList<String> stations = new ArrayList<>; //variable array for station names
 
-    public int tick = 0
-    public int counters = 0
+    public int tick = 0;
+    public int counters = 0;
 
     public 
 
     @Override //1
     public void initialise(int width, int height) throws InvalidGridException {
         grid = int[width][height];
-        tick = 0
+        tick = 0;
     }
 
     @Override //2
     public int[] getGridSize() {
-        return {width, height}
+        return (width, height);
     }
 
     @Override //3
     public void addObstacle(int x, int y) throws InvalidLocationException {
         if (0 <= x < width) & (0 <= y < height) {
+            grid[x][y] = "X";
             grid[x][y] = 'X';
         }
     }
