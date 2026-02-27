@@ -1,11 +1,13 @@
 
+package cityrescue.required_classes;
+
 // This is the class for every grid space in the grid
 
 public class GridSpace{
     // Attributes
     public int x_coord;
     public int y_coord;
-    public String type = empty;
+    public String type = "Empty";
 
     // Constructor
     public GridSpace(int x_coord, int y_coord) {

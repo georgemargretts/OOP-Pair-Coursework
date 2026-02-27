@@ -2,7 +2,8 @@ package cityrescue;
 
 import cityrescue.enums.*;
 import cityrescue.exceptions.*;
-import CityMap, Incident, Station, Unit
+import cityrescue.required_classes.*;
+import cityrescue.required_classes.unit_subclasses.*;
 
 import java.util.ArrayList;
 
@@ -23,9 +24,9 @@ public class CityRescueImpl implements CityRescue {
 
     public int width = 1; //sets width
     public int height = 1; //sets height
-    public char[][] grid = new int[width][height]; // creates the grid
+    public char[][] grid = new char[width][height]; // creates the grid
 
-    public ArrayList<String> stations = new ArrayList<>; //variable array for station names
+    public ArrayList<String> stations = new ArrayList<>(); //variable array for station names
 
     public int tick = 0;
     public int counters = 0;
@@ -34,13 +35,12 @@ public class CityRescueImpl implements CityRescue {
 
     @Override //1
     public void initialise(int width, int height) throws InvalidGridException {
-        grid = int[width][height];
-        tick = 0;
+        // start a new simulation
     }
 
     @Override //2
-    public int[] getGridSize() {
-        return (width, height);
+    public int getGridSize() {
+        return width, height;
     }
 
     @Override //3
