@@ -41,4 +41,9 @@ public class Station extends GridSpace{
         return current_no_held;
     }
 
+    public int[] getLocation() {
+        int[] location = {x_coord, y_coord};
+        return location;
+    }
+
 }
