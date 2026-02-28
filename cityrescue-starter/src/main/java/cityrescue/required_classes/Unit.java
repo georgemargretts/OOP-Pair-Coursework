@@ -1,7 +1,9 @@
 
 package cityrescue.required_classes;
 
-import cityrescue.enums.*;
+import cityrescue.enums.IncidentType;
+import cityrescue.enums.UnitStatus;
+import cityrescue.enums.UnitType;
 
 /**
  * Unit Class
@@ -14,9 +16,11 @@ import cityrescue.enums.*;
 public abstract class Unit extends GridSpace{
     //Attributes
     public UnitStatus status = UnitStatus.IDLE;
-    public UnitType type;
+    public UnitType type; // This will be overridden in the subclasses
     public IncidentType type_to_handle;
     public int UnitID;
+    public int HOME;
+    public String WORK;
 
     //Constructors
     public Unit(int x_coord, int y_coord) {
@@ -27,4 +31,9 @@ public abstract class Unit extends GridSpace{
     public void setID(int ID) {
         this.UnitID = ID;
     }
+
+    public void setstatus(UnitStatus newstatus) {
+        this.status = newstatus;
+    }
+
 }
