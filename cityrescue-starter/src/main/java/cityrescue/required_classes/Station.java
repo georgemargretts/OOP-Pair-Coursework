@@ -1,7 +1,11 @@
 
 package cityrescue.required_classes;
 
-// The class for stations
+/**
+ * Station Class
+ * 
+ * Child to the GridSpace class
+ */
 
 public class Station extends GridSpace{
     // Attributes

@@ -1,11 +1,22 @@
 
 package cityrescue.required_classes;
 
-// This is the abstract class for unit
+import cityrescue.enums.*;
+
+/**
+ * Unit Class
+ * 
+ * Child to the GridSpace class
+ */
+
 // Example viewUnit() format U#2 TYPE=FIRE_ENGINE HOME=2 LOC=(3,1) STATUS=AT_SCENE INCIDENT=1 WORK=2
 
 public abstract class Unit extends GridSpace{
     //Attributes
+    public UnitStatus status = UnitStatus.IDLE;
+    public UnitType type;
+    public IncidentType type_to_handle;
+    public int UnitID;
 
     //Constructors
     public Unit(int x_coord, int y_coord) {
@@ -13,4 +24,7 @@ public abstract class Unit extends GridSpace{
     }
 
     //Methods
+    public void setID(int ID) {
+        this.UnitID = ID;
+    }
 }

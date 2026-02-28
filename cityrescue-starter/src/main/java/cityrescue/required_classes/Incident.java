@@ -1,7 +1,11 @@
 
 package cityrescue.required_classes;
 
-// Class for incidents
+/**
+ * Incident Class
+ * 
+ * Child to the GridSpace class
+ */
 
 public class Incident extends GridSpace{
     // Attributes

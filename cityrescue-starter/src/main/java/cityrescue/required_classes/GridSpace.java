@@ -1,7 +1,13 @@
 
 package cityrescue.required_classes;
 
-// This is the class for every grid space in the grid
+/**
+ * GridSpace Class
+ * 
+ * This is the parent class to every Incident, Station and Unit.
+ * 
+ * It holds the location of the object (in x_coord and y_coord)
+ */
 
 public class GridSpace{
     // Attributes

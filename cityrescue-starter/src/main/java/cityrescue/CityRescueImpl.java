@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * Your task is to implement the full specification.
  * You may add additional classes in any package(s) you like.
  */
+
 public class CityRescueImpl implements CityRescue {
 
     public static void main(String[] args) {
@@ -22,47 +23,49 @@ public class CityRescueImpl implements CityRescue {
     // TODO: add fields (map, arrays for stations/units/incidents, counters, tick, etc.)
     // We need to create attributes here
 
-    public int width = 1; //sets width
-    public int height = 1; //sets height
-    public char[][] grid = new char[width][height]; // creates the grid
+    public int width; //creates city width
+    public int height; //creates city height
 
     public ArrayList<String> stations = new ArrayList<>(); //variable array for station names
 
     public int tick = 0;
     public int counters = 0;
 
-    public 
+    // Constructor
+    public CityRescueImpl(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    // Methods
 
     @Override //1
     public void initialise(int width, int height) throws InvalidGridException {
         // start a new simulation
+        CityMap city_map = new CityMap(width, height);
     }
 
     @Override //2
-    public int getGridSize() {
-        return width, height;
+    public int[] getGridSize() {
+        
+        return size;
     }
 
     @Override //3
     public void addObstacle(int x, int y) throws InvalidLocationException {
-        if (0 <= x < width) & (0 <= y < height) {
-            grid[x][y] = "X";
-            grid[x][y] = 'X';
+        if ((0 <= x && x < width) && (0 <= y && y < height)) {
         }
     }
 
     @Override //4
     public void removeObstacle(int x, int y) throws InvalidLocationException {
-        if (0 <= x < width) & (0 <= y < height) {
-            grid[x][y] = char "";
+        if ((0 <= x && x < width) && (0 <= y && y < height)) {
         }
     }
 
     @Override //5
     public int addStation(String name, int x, int y) throws InvalidNameException, InvalidLocationException {
         Station newStation = new Station(name, x, y);
-        grid[x][y] = 
-        return(newStation.getID();)
     }
 
     @Override //6
