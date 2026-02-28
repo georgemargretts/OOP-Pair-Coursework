@@ -20,7 +20,6 @@ public class CityRescueImpl implements CityRescue {
         System.out.println("Hello");
     }
 
-    // TODO: add fields (map, arrays for stations/units/incidents, counters, tick, etc.)
     // We need to create attributes here
 
     public int width; //creates city width
@@ -169,20 +168,16 @@ public class CityRescueImpl implements CityRescue {
 
     @Override //15
     public int reportIncident(IncidentType type, int severity, int x, int y) throws InvalidSeverityException, InvalidLocationException {
-        if ((name.equals(""))) { // Does the name equal ""
-            throw new InvalidSeverityException("Severity5 is invalid");
+        if (severity <= 5) { // Is the severity valid
+            throw new InvalidSeverityException("Severity is invalid");
         }
         if ((0 <= x && x < width) && (0 <= y && y < height) && (city_map.checkForObstacle(x, y))) { // Is the location valid
             throw new InvalidLocationException("Location is invalid");
         }
-        if (stations.size() < MAX_STATIONS) { // Can we create another station without going over the limit
-            Station new_station = new Station(name, x, y, station_ID++); // creates the station
-            stations.add(new_station);
-            return new_station.getID();
-        } else {
-            throw new CapacityExceededException("Max number os stations reached");
+        if (!(type.equals(null))) {
+            
         }
-        throw new UnsupportedOperationException("Not implemented yet");
+
     }
 
     @Override //16
