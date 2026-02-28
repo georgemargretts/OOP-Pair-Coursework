@@ -15,12 +15,14 @@ public class Incident extends GridSpace{
     public int severity;
     public IncidentStatus status = IncidentStatus.REPORTED;
     public int unit;
+    public int ID;
 
     // Constructor
-    public Incident(int x_coord, int y_coord, int severity, IncidentType type) {
+    public Incident(int x_coord, int y_coord, int severity, IncidentType type, int ID) {
         super(x_coord, y_coord);
         this.severity = severity;
         this.type = type;
+        this.ID = ID;
     }
 
     // Methods
@@ -28,4 +30,11 @@ public class Incident extends GridSpace{
         this.severity = newseverity;
     }
 
+    public void updateStatus(IncidentStatus new_status) {
+        this.status = new_status;
+    }
+
+    public int getID() { // Returns the ID of the incident
+        return ID;
+    }
 }

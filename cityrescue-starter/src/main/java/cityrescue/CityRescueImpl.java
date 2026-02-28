@@ -32,6 +32,7 @@ public class CityRescueImpl implements CityRescue {
 
     // lists of said 'things'
     public ArrayList<Station> stations = new ArrayList<Station>();
+    public ArrayList<Incident> incidents = new ArrayList<Incident>();
 
     public int tick = 0;
     public int counters = 0;
@@ -174,22 +175,38 @@ public class CityRescueImpl implements CityRescue {
         if ((0 <= x && x < width) && (0 <= y && y < height) && (city_map.checkForObstacle(x, y))) { // Is the location valid
             throw new InvalidLocationException("Location is invalid");
         }
-        if (!(type.equals(null))) {
-            
+        if (type != null) {
+            Incident new_incident = new Incident(x, y, severity, type, incident_id++);
+            incidents.add(new_incident);
+            return new_incident.getID();
+        } else {
+            throw new IllegalStateException("Invalid type of incident");
         }
-
     }
 
     @Override //16
     public void cancelIncident(int incidentId) throws IDNotRecognisedException, IllegalStateException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (int a = 0; a < incidents.size(); a++) { // loops through all stations in station list
+            int current_ID = incidents.get(a).getID(); // gets the id of the current station
+            if (current_ID == incidentId) { // compares ids
+                incidents.get(a).updateStatus(IncidentStatus.CANCELLED);
+                return;
+            }
+        }
+        throw new IDNotRecognisedException("ID not found in list of stations");
     }
 
     @Override //17
     public void escalateIncident(int incidentId, int newSeverity) throws IDNotRecognisedException, InvalidSeverityException, IllegalStateException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (newSeverity < 1 && newSeverity > 5) {
+            throw new InvalidSeverityException("Invalid severity change");
+        }
+        for (int a = 0; a < incidents.size(); a++) { // loops through all stations in station list
+            int current_ID = incidents.get(a).getID(); // gets the id of the current station
+            if (current_ID == incidentId) { // compares ids
+            }
+        }
+        throw new IDNotRecognisedException("ID not found in list of stations");
     }
 
     @Override //18
