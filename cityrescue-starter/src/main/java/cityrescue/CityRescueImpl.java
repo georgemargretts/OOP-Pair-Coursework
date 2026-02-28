@@ -30,6 +30,7 @@ public class CityRescueImpl implements CityRescue {
 
     public int tick = 0;
     public int counters = 0;
+    public CityMap city_map = new CityMap(width, height);
 
     // Constructor
     public CityRescueImpl(int width, int height) {
@@ -42,24 +43,25 @@ public class CityRescueImpl implements CityRescue {
     @Override //1
     public void initialise(int width, int height) throws InvalidGridException {
         // start a new simulation
-        CityMap city_map = new CityMap(width, height);
     }
 
     @Override //2
     public int[] getGridSize() {
-        
+        int[] size = city_map.getGridSize();
         return size;
     }
 
     @Override //3
     public void addObstacle(int x, int y) throws InvalidLocationException {
         if ((0 <= x && x < width) && (0 <= y && y < height)) {
+            city_map.updateObstacle(true, x, y);
         }
     }
 
     @Override //4
     public void removeObstacle(int x, int y) throws InvalidLocationException {
         if ((0 <= x && x < width) && (0 <= y && y < height)) {
+            city_map.updateObstacle(false, x, y);
         }
     }
 
