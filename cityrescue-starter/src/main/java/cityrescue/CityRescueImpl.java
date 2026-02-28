@@ -71,14 +71,14 @@ public class CityRescueImpl implements CityRescue {
 
     @Override //5
     public int addStation(String name, int x, int y) throws InvalidNameException, InvalidLocationException, CapacityExceededException {
-        if ((name.equals(""))) {
+        if ((name.equals(""))) { // Does the name equal ""
             throw new InvalidNameException("Name is invalid");
         }
-        if ((0 <= x && x < width) && (0 <= y && y < height) && (city_map.checkForObstacle(x, y))) {
+        if ((0 <= x && x < width) && (0 <= y && y < height) && (city_map.checkForObstacle(x, y))) { // Is the location valid
             throw new InvalidLocationException("Location is invalid");
         }
-        if (stations.size() < MAX_STATIONS) {
-            Station new_station = new Station(name, x, y, station_ID++);
+        if (stations.size() < MAX_STATIONS) { // Can we create another station without going over the limit
+            Station new_station = new Station(name, x, y, station_ID++); // creates the station
             stations.add(new_station);
             return new_station.getID();
         } else {
@@ -169,7 +169,19 @@ public class CityRescueImpl implements CityRescue {
 
     @Override //15
     public int reportIncident(IncidentType type, int severity, int x, int y) throws InvalidSeverityException, InvalidLocationException {
-        // TODO: implement
+        if ((name.equals(""))) { // Does the name equal ""
+            throw new InvalidSeverityException("Severity5 is invalid");
+        }
+        if ((0 <= x && x < width) && (0 <= y && y < height) && (city_map.checkForObstacle(x, y))) { // Is the location valid
+            throw new InvalidLocationException("Location is invalid");
+        }
+        if (stations.size() < MAX_STATIONS) { // Can we create another station without going over the limit
+            Station new_station = new Station(name, x, y, station_ID++); // creates the station
+            stations.add(new_station);
+            return new_station.getID();
+        } else {
+            throw new CapacityExceededException("Max number os stations reached");
+        }
         throw new UnsupportedOperationException("Not implemented yet");
     }
 

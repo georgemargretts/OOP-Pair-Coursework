@@ -32,4 +32,5 @@ public class CityMap{
 
     public boolean checkForObstacle(int x_coord, int y_coord) {
         return grid[x_coord][y_coord];
+    }
 }
