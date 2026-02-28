@@ -6,7 +6,7 @@ import cityrescue.exceptions.*;
 public interface CityRescue {
     // Creates grid off given input size
     void initialise(int width, int height) throws InvalidGridException;
-    int[] getGrdidSize();
+    int[] getGridSize();
 
     // Creates obstacles
     void addObstacle(int x, int y) throws InvalidLocationException;

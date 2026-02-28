@@ -29,4 +29,7 @@ public class CityMap{
     public void updateObstacle(boolean new_grid_value, int new_x_coord, int new_y_coord) {
         grid[new_x_coord][new_y_coord] = new_grid_value;
     }
+
+    public boolean checkForObstacle(int x_coord, int y_coord) {
+        return grid[x_coord][y_coord];
 }

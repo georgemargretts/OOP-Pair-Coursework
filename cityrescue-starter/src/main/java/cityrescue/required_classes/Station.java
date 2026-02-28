@@ -15,7 +15,7 @@ public class Station extends GridSpace{
     public int ID;
 
     // Constructor
-    public Station(String name, int x_coord, int y_coord, int ID){
+    public Station(String name, int x_coord, int y_coord, int ID) {
         super(x_coord, y_coord);
         this.ID = ID;
     }
@@ -30,11 +30,8 @@ public class Station extends GridSpace{
     }
     
     public boolean isEmpty() { //returns if the station is empty or not
-        if (current_no_held == 0) {
-            return true;
-        } else {
-            return false; }
-        }
+        return (current_no_held == 0);
+    }
 
     public int getMaxUnits() { //returns the capacity
         return capacity;

@@ -26,39 +26,43 @@ public class CityRescueImpl implements CityRescue {
     public int width; //creates city width
     public int height; //creates city height
 
-    public ArrayList<String> stations = new ArrayList<>(); //variable array for station names
+    // make number of each 'thing'
+    public int MAX_STATIONS = 20;
+    public int MAX_UNITS = 50;
+    public int MAX_INCIDENTS = 200;
+
+    // lists of said 'things'
+    public ArrayList<Station> stations = new ArrayList<Station>();
 
     public int tick = 0;
     public int counters = 0;
-    public CityMap city_map = new CityMap(width, height);
+    public CityMap city_map;
 
-    // Constructor
-    public CityRescueImpl(int width, int height) {
-        this.width = width;
-        this.height = height;
-    }
+    public int station_ID = 1;
+    public int unit_ID = 1;
+    public int incident_id = 1;
 
     // Methods
 
     @Override //1
     public void initialise(int width, int height) throws InvalidGridException {
-        // start a new simulation
+        city_map = new CityMap(width, height);
     }
 
-    @Override //2
+    @Override //2 #done
     public int[] getGridSize() {
         int[] size = city_map.getGridSize();
         return size;
     }
 
-    @Override //3
+    @Override //3 #done
     public void addObstacle(int x, int y) throws InvalidLocationException {
         if ((0 <= x && x < width) && (0 <= y && y < height)) {
             city_map.updateObstacle(true, x, y);
         }
     }
 
-    @Override //4
+    @Override //4 #done
     public void removeObstacle(int x, int y) throws InvalidLocationException {
         if ((0 <= x && x < width) && (0 <= y && y < height)) {
             city_map.updateObstacle(false, x, y);
@@ -66,56 +70,65 @@ public class CityRescueImpl implements CityRescue {
     }
 
     @Override //5
-    public int addStation(String name, int x, int y) throws InvalidNameException, InvalidLocationException {
-        Station newStation = new Station(name, x, y);
+    public int addStation(String name, int x, int y) throws InvalidNameException, InvalidLocationException, CapacityExceededException {
+        if ((name.equals(""))) {
+            throw new InvalidNameException("Name is invalid");
+        }
+        if ((0 <= x && x < width) && (0 <= y && y < height) && (city_map.checkForObstacle(x, y))) {
+            throw new InvalidLocationException("Location is invalid");
+        }
+        if (stations.size() < MAX_STATIONS) {
+            Station new_station = new Station(name, x, y, station_ID++);
+            stations.add(new_station);
+            return new_station.getID();
+        } else {
+            throw new CapacityExceededException("Max number os stations reached");
+        }
     }
 
     @Override //6
     public void removeStation(int stationId) throws IDNotRecognisedException, IllegalStateException {
-        //loop through the entire grid to find the station
-        for (int i=0; i < width; i++) {
-            for (int j=0; j < width; j++) {
-                // if it is a station
-                if (grid[i][j] instanceof Station) {
-                    // check if it is empty
-                    if (grid[i][j].isEmpty() == true) {
-                        grid[i][j] = 'S';
-                    }
+        for (int a = 0; a < stations.size(); a++) { // loops through all stations in station list
+            int current_ID = stations.get(a).getID(); // gets the id of the current station
+            if (current_ID == stationId) { // compares ids
+                if (stations.get(a).isEmpty() == true) { // checks if it is empty
+                    stations.remove(a);
+                    return;
+                }
+                else {
+                    throw new IllegalStateException("Station is not empty");
                 }
             }
         }
+        throw new IDNotRecognisedException("ID not found in list of stations");
     }
 
     @Override //7
     public void setStationCapacity(int stationId, int maxUnits) throws IDNotRecognisedException, InvalidCapacityException {
-        //loop through the entire grid to find the station
-        for (int i=0; i < width; i++) {
-            for (int j=0; j < width; j++) {
-                // if it is a station
-                if (grid[i][j] instanceof Station) {
-                    // check capacity > 0 and chosen new max units > current units
-                    if (grid[i][j].getMaxUnits() > 0) && (grid[i][j].getCurrentUnits() < maxUnits) {
-                        grid[i][j].setCapacity(maxUnits);
-                    }
+        for (int a = 0; a < stations.size(); a++) { // loops through all stations in station list
+            int current_ID = stations.get(a).getID(); // gets the id of the current station
+            if (current_ID == stationId) { // compares ids
+                if (stations.get(a).getMaxUnits() > 0 && stations.get(a).getCurrentUnits() < maxUnits) { // checks if maxUnits is an acceptable number
+                    stations.get(a).setCapacity(maxUnits);
+                    return;
+                }
+                else {
+                    throw new InvalidCapacityException("New MaxUnits is an invalid input");
                 }
             }
         }
+        throw new IDNotRecognisedException("ID not found in list of stations");
     }
 
     @Override //8
     public int[] getStationIds() {
-        ArrayList<String> list_of_ids = new ArrayList<>();
-        //loop through the entire grid to find the station
-        for (int i=0; i < width; i++) {
-            for (int j=0; j < width; j++) {
-                // if it is a station
-                if (grid[i][j] instanceof Station) {
-                    // add to list
-                    list_of_ids.add(grid[i][j].getID());
-                }
-            }
-        list_of_ids.sort();
-        System.out.println(list_of_ids);
+        int[] list_of_ids;
+        list_of_ids = new int[stations.size()];
+        for (int a = 0; a < stations.size(); a++) {
+            int current_ID = stations.get(a).getID();
+            list_of_ids[a] = current_ID;
+        }
+        return list_of_ids;
     }
 
     @Override //9
