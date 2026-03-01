@@ -25,10 +25,6 @@ public class Station extends GridSpace{
         this.capacity = new_capacity;
     }
 
-    public int getID() { //returns the ID of the station
-        return ID;
-    }
-    
     public boolean isEmpty() { //returns if the station is empty or not
         return (current_no_held == 0);
     }
@@ -40,10 +36,4 @@ public class Station extends GridSpace{
     public int getCurrentUnits() {
         return current_no_held;
     }
-
-    public int[] getLocation() {
-        int[] location = {x_coord, y_coord};
-        return location;
-    }
-
 }

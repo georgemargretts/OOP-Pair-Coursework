@@ -224,6 +224,7 @@ public class CityRescueImpl implements CityRescue {
         for (int a = 0; a < incidents.size(); a++) { // loops through all stations in station list
             int current_ID = incidents.get(a).getID(); // gets the id of the current station
             if (current_ID == incidentId) { // compares ids
+                incidents.get(a).updateSeverity(newSeverity);
             }
         }
         throw new IDNotRecognisedException("ID not found in list of stations");
@@ -231,20 +232,51 @@ public class CityRescueImpl implements CityRescue {
 
     @Override //18
     public int[] getIncidentIds() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        int[] list_of_ids;
+        list_of_ids = new int[incidents.size()];
+        for (int a = 0; a < incidents.size(); a++) {
+            int current_ID = incidents.get(a).getID();
+            list_of_ids[a] = current_ID;
+        }
+        return list_of_ids;
     }
 
     @Override //19
     public String viewIncident(int incidentId) throws IDNotRecognisedException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
+        // format : I#1 TYPE=FIRE SEV=4 LOC=(3,1) STATUS=IN_PROGRESS UNIT=2
+        for (int a = 0; a < incidents.size(); a++) {
+            int current_ID = incidents.get(a).getID(); // gets the id of the current station
+            if (current_ID == incidentId) {
+                IncidentType type = incidents.get(a).getType();
+                int severity = incidents.get(a).getSeverity();
+                int[] location = incidents.get(a).getLocation();
+                IncidentStatus status = incidents.get(a).getStatus();
+                int unit = incidents.get(a).getUnit();
+                String output = String.format(
+                    "I#%d TYPE=%s SEV=%d LOC=(%d, %d) STATUS=%s UNIT=%d",
+                    incidentId, type, severity, location, status, unit    
+                );
+                return output;
+            }
+        }
+        throw new IDNotRecognisedException("ID not found");
+    }    
 
     @Override //20
     public void dispatch() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        /* 
+        Assigns units to waiting incidents :
+        Find each REPORTED incident
+        For each incident (lower id - higher id):
+            1. find units in closeness (manhattan distance)
+            2. check for the closest that is the correct type
+            3. is there is a tie-break, do the tie-break so it is always the same
+        Set incident to DISPATCH
+        Set chosen Unit to EN_ROUTE
+        */
+        for (int a = 0; a < incidents.size(); a++) {
+            
+        }
     }
 
     @Override //21

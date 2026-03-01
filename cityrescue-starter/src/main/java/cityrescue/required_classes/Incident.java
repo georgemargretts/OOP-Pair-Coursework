@@ -34,7 +34,23 @@ public class Incident extends GridSpace{
         this.status = new_status;
     }
 
-    public int getID() { // Returns the ID of the incident
-        return ID;
+    public void updateUnit(int new_unit) {
+        this.unit = new_unit;
+    }
+
+    public IncidentType getType() {
+        return type;
+    }
+
+    public int getSeverity() {
+        return severity;
+    }
+
+    public IncidentStatus getStatus() {
+        return status;
+    }
+
+    public int getUnit() {
+        return unit;
     }
 }

@@ -14,6 +14,7 @@ public class GridSpace{
     public int x_coord;
     public int y_coord;
     public String type = "Empty";
+    public int ID;
 
     // Constructor
     public GridSpace(int x_coord, int y_coord) {
@@ -22,4 +23,12 @@ public class GridSpace{
     }
 
     // Methods
+    public int getID() { // Returns the ID of the incident
+        return ID;
+    }
+
+    public int[] getLocation() {
+        int[] location = {x_coord, y_coord};
+        return location;
+    }
 }
