@@ -40,4 +40,8 @@ public class Station extends GridSpace{
     public void incrementUnits() {
         this.current_no_held++;
     }
+
+    public void decrementUnits() {
+        this.current_no_held--;
+    }
 }

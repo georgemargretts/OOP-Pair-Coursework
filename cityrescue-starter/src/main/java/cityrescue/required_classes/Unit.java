@@ -38,8 +38,12 @@ public abstract class Unit extends GridSpace{
         this.status = newstatus;
     }
 
-    public UnitType getStatus() {
+    public UnitType getType() {
         return type;
+    }
+
+    public UnitStatus getStatus() {
+        return status;
     }
 
 }

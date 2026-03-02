@@ -135,23 +135,21 @@ public class CityRescueImpl implements CityRescue {
     @Override //9 #done i think?
     public int addUnit(int stationId, UnitType type) throws IDNotRecognisedException, InvalidUnitException, IllegalStateException {
         for (int a = 0; a < stations.size(); a++) { // loops through all stations in station list
-            int current_ID = stations.get(a).getID(); // gets the id of the current station
+            Station station = stations.get(a);
+            int current_ID = station.getID(); // gets the id of the current station
             if (current_ID == stationId) { // compares ids
-                if ( stations.get(a).getMaxUnits() > stations.get(a).getCurrentUnits() ) {
-                    if ( type != null ) {
-                        int[] location = stations.get(a).getLocation();
-                        Unit new_unit = null;
-                        if (type == UnitType.AMBULANCE) {
-                            new_unit = new Ambulance(location[0], location[1]);
-                        } else if (type == UnitType.FIRE_ENGINE) {
-                            new_unit = new FireEngine(location[0], location[1]);
-                        } else if (type == UnitType.POLICE_CAR) {
-                            new_unit = new PoliceCar(location[0], location[1]);
-                        } else {
-                            throw new InvalidUnitException("Invalid unit type");
-                        }
+                if (station.getMaxUnits() > station.getCurrentUnits()) {
+                    if (type != null) {
+                        int[] location = station.getLocation();
+                        Unit new_unit = switch(type) {
+                            case AMBULANCE -> new Ambulance(location[0], location[1]);
+                            case FIRE_ENGINE -> new FireEngine(location[0], location[1]);
+                            case POLICE_CAR -> new PoliceCar(location[0], location[1]);
+                            default -> throw new InvalidUnitException("Invalid unit type");
+                        };
+                        new_unit.HOME = station.getID(); // Assigns a home to the unit (the station's Id)
                         units.add(new_unit);  // Added to units with unique Id
-                        stations.get(a).incrementUnits();  // Update station
+                        station.incrementUnits();  // Update station
                         return new_unit.getID();
                     } else {
                         throw new IllegalStateException("Null unit type");
@@ -164,10 +162,33 @@ public class CityRescueImpl implements CityRescue {
         throw new IDNotRecognisedException("Station ID not found" + stationId);
     }
 
-    @Override //10
+    @Override //10 #done i think?
     public void decommissionUnit(int unitId) throws IDNotRecognisedException, IllegalStateException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (int a = 0; a < units.size(); a++) { // loops through all units in units list
+            Unit unit = units.get(a); 
+            if (unit.getStatus() == UnitStatus.IDLE) {
+                if (unitId == unit.getID() ) {
+
+                    Station station = null; // Needs to exist before statements
+                    for (Station s : stations) { // Finds the units home
+                        if (s.getID() == unit.HOME) {
+                            station = s;
+                            break;
+                        }
+                    }
+                    
+                    if (station == null) {
+                        throw new IllegalStateException("Unit's home station not found");
+                    }
+                    units.remove(a); // Removes unit from array
+                    station.decrementUnits(); // Removes 1 space from the station
+                    return;
+                }
+            } else {
+                throw new IllegalStateException("Unit is busy");
+            }
+        }
+        throw new IDNotRecognisedException("Unit ID not found");
     }
 
     @Override //11
