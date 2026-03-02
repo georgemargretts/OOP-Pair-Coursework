@@ -33,6 +33,7 @@ public class CityRescueImpl implements CityRescue {
     // lists of said 'things'
     public ArrayList<Station> stations = new ArrayList<Station>();
     public ArrayList<Incident> incidents = new ArrayList<Incident>();
+    public ArrayList<Unit> units = new ArrayList<>();
 
     public int tick = 0;
     public int counters = 0;
@@ -131,7 +132,7 @@ public class CityRescueImpl implements CityRescue {
         return list_of_ids;
     }
 
-    @Override //9
+    @Override //9 #done i think?
     public int addUnit(int stationId, UnitType type) throws IDNotRecognisedException, InvalidUnitException, IllegalStateException {
         for (int a = 0; a < stations.size(); a++) { // loops through all stations in station list
             int current_ID = stations.get(a).getID(); // gets the id of the current station
@@ -139,22 +140,28 @@ public class CityRescueImpl implements CityRescue {
                 if ( stations.get(a).getMaxUnits() > stations.get(a).getCurrentUnits() ) {
                     if ( type != null ) {
                         int[] location = stations.get(a).getLocation();
+                        Unit new_unit = null;
                         if (type == UnitType.AMBULANCE) {
-                            Ambulance new_unit = Ambulance(location[0], location[1]);
-                        } 
-                        if (type == UnitType.FIRE_ENGINE) {
-                            FireEngine new_unit = FireEngine(location[0], location[1]);
-                        } 
-                        if (type == UnitType.POLICE_CAR) {
-                            PoliceCar new_unit = PoliceCar(location[0], location[1]);
+                            new_unit = new Ambulance(location[0], location[1]);
+                        } else if (type == UnitType.FIRE_ENGINE) {
+                            new_unit = new FireEngine(location[0], location[1]);
+                        } else if (type == UnitType.POLICE_CAR) {
+                            new_unit = new PoliceCar(location[0], location[1]);
+                        } else {
+                            throw new InvalidUnitException("Invalid unit type");
                         }
+                        units.add(new_unit);  // Added to units with unique Id
+                        stations.get(a).incrementUnits();  // Update station
+                        return new_unit.getID();
+                    } else {
+                        throw new IllegalStateException("Null unit type");
                     }
+                } else {
+                    throw new IllegalStateException("Station already at capacity");
                 }
             }
         }
-               // public int capacity = 1;
-               //  public int current_no_held = 0;
-        throw new UnsupportedOperationException("Not implemented yet");
+        throw new IDNotRecognisedException("Station ID not found" + stationId);
     }
 
     @Override //10

@@ -36,4 +36,8 @@ public class Station extends GridSpace{
     public int getCurrentUnits() {
         return current_no_held;
     }
+
+    public void incrementUnits() {
+        this.current_no_held++;
+    }
 }

@@ -18,6 +18,7 @@ public abstract class Unit extends GridSpace{
     public UnitStatus status = UnitStatus.IDLE;
     public UnitType type; // This will be overridden in the subclasses
     public IncidentType type_to_handle;
+    public static int nextID = 1;
     public int UnitID;
     public int HOME;
     public String WORK;
@@ -25,6 +26,7 @@ public abstract class Unit extends GridSpace{
     //Constructors
     public Unit(int x_coord, int y_coord) {
         super(x_coord, y_coord);
+        this.UnitID = nextID++;
     }
 
     //Methods
