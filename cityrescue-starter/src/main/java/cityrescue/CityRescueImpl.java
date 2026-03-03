@@ -493,5 +493,6 @@ public class CityRescueImpl implements CityRescue {
                 " WORK=" + unit.getWORKTick();
             statusDisplay.append(unitOutput).append("\n");
         }
+        return statusDisplay.toString();
     }
 }
