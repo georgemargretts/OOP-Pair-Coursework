@@ -276,7 +276,7 @@ public class CityRescueImpl implements CityRescue {
 
     @Override //15
     public int reportIncident(IncidentType type, int severity, int x, int y) throws InvalidSeverityException, InvalidLocationException {
-        if (severity <= 5) { // Is the severity valid
+        if (severity < 1 || severity > 5) { // Is the severity valid
             throw new InvalidSeverityException("Severity is invalid");
         }
         if ((0 <= x && x < width) && (0 <= y && y < height) && (city_map.checkForObstacle(x, y))) { // Is the location valid
