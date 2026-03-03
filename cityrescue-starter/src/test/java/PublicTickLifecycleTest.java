@@ -17,7 +17,7 @@ public class PublicTickLifecycleTest {
     @Test
     void tick_movesUnitTowardIncident_andEventuallyResolves() throws Exception {
         int s = cr.addStation("A", 0, 0);
-        int u = cr.addUnit(s, UnitType.MEDICAL);
+        int u = cr.addUnit(s, UnitType.AMBULANCE);
 
         int i = cr.reportIncident(IncidentType.MEDICAL, 1, 0, 1);
         cr.dispatch();

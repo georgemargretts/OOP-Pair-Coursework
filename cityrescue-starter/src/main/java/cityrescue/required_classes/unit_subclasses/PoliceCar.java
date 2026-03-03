@@ -8,7 +8,7 @@ import cityrescue.enums.UnitType;
 
 public class PoliceCar extends Unit {
     // Attributes
-    public UnitType type = UnitType.CRIME; //Overrides the type
+    public UnitType type = UnitType.POLICE_CAR; //Overrides the type
 
     // Constructor
     public PoliceCar(int x_coord, int y_coord) {

@@ -8,7 +8,7 @@ import cityrescue.enums.UnitType;
 
 public class FireEngine extends Unit {
     // Attributes
-    public UnitType type = UnitType.FIRE; //Overrides the type
+    public UnitType type = UnitType.FIRE_ENGINE; //Overrides the type
 
     // Constructor
     public FireEngine(int x_coord, int y_coord) {

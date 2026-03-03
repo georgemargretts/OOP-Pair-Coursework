@@ -17,8 +17,8 @@ public class PublicDispatchTest {
     @Test
     void dispatch_assignsClosestEligibleUnit_thenLowestUnitId() throws Exception {
         int s = cr.addStation("A", 0, 0);
-        int u1 = cr.addUnit(s, UnitType.CRIME);
-        int u2 = cr.addUnit(s, UnitType.CRIME);
+        int u1 = cr.addUnit(s, UnitType.POLICE_CAR);
+        int u2 = cr.addUnit(s, UnitType.POLICE_CAR);
 
         int i1 = cr.reportIncident(IncidentType.CRIME, 2, 2, 2);
 

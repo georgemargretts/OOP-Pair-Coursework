@@ -377,12 +377,20 @@ public class CityRescueImpl implements CityRescue {
 
                 for (int b = 0; a < units.size(); a++) { //loops through each unit to find closest one
                     // check if right type
-                    if (units.get(b).getStatus().equals(incidents.get(a).getType())) { // checks if the 2 enums are the same
+                    IncidentType needed_type = units.get(b).getIncidentType();
+                    if (needed_type == incidents.get(a).getType()) { // checks if the 2 enums are the same
                         // find manhattan distance
                         // manhattan distance (|𝑥! − 𝑥"| + |𝑦! − 𝑦"|)
                         int[] unit_coords = units.get(b).getLocation();
                         int manhattan_distance = Math.abs(incident_coords[0] - incident_coords[1]) + Math.abs(unit_coords[0] - unit_coords[1]);
 
+                        if (manhattan_distance == value_of_lowest_md) { // if we have a tie
+                            int ID1 = units.get(index_of_lowest_md).getID();
+                            int ID2 = units.get(b).getID();
+                            if (ID2 < ID1) { //if the new found unit has a lower ID
+                                index_of_lowest_md = b;
+                            }
+                        }
                         if (manhattan_distance < value_of_lowest_md) { // if manhattan distance better (lower) replace values
                             value_of_lowest_md = manhattan_distance;
                             index_of_lowest_md = b;
@@ -397,8 +405,52 @@ public class CityRescueImpl implements CityRescue {
 
     @Override //21
     public void tick() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        /*
+        This method advances time by 1 tick
+
+        1. Tick++
+        2. Update in this order :
+            a. move EN_ROUTE units (asc unitID)
+                This would done by :
+                1. List the four candidate moves in order N, E, S, W.
+                2. Ignore moves that go out of bounds or into a blocked cell.
+                3. Take the first legal move that reduces Manhattan distance to the target.
+                4. If none reduce distance, take the first legal move in N, E, S, W order.
+                5. If no legal move exists, the unit stays put this tick.
+            b. mark arrivals (unit to an incident)
+                Change status to IN_PROGESS and set tick timer
+            c. process on-scene work
+                Decrement tick timer
+            d. resolve completed incidents (asc incidentID)
+                Set incdient to RESOLVED, delete it and set the Unit to be free
+        */
+        tick++; // increments the tick value
+
+        // make units move
+
+        // mark arrivals
+        for (int a = 0; a < units.size(); a++) { // loops through each unit
+            int incident_goal_id = units.get(a).getIncidentId(); // id of the incident it wants to get to
+            for (int b = 0; a < incidents.size(); a++) { // loops through each incident
+                if (incident_goal_id == incidents.get(b).getID()) { // if the incident is the one the unit wants to get to
+                    if (incidents.get(b).getLocation() == units.get(a).getLocation()) { // if they are at the same location (e.g it arrived)
+                        incidents.get(b).updateStatus(IncidentStatus.IN_PROGRESS); // Incident set to IN_PROGRESS
+                        units.get(a).setStatus(UnitStatus.AT_SCENE); // Unit set to AT_SCENE
+                        incidents.get(b).resetWorkTick(); // resets the work tick to its correct value
+                    }
+                }
+            }
+        }
+
+        // process on-scene work
+        for (int a = 0; a < incidents.size(); a++) { // loops through each incident
+            if (incidents.get(a).getStatus() == IncidentStatus.IN_PROGRESS) { // if the incident is in progress
+
+            }
+        }
+
+        // resolve completed incidents
+
     }
 
     @Override //22

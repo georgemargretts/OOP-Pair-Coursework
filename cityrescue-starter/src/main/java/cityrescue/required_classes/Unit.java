@@ -21,8 +21,7 @@ public abstract class Unit extends GridSpace{
     public IncidentType type_to_handle;
     public static int nextID = 1;
     public int UnitID;
-    public int HOME;
-    public int WORKTick = 0;
+    public int home;
 
     //Constructors
     public Unit(int x_coord, int y_coord) {
@@ -47,12 +46,25 @@ public abstract class Unit extends GridSpace{
         return status;
     }
 
-    public void setHOME(int HOME) {
-        this.HOME = HOME;
+    public IncidentType getIncidentType() {
+        if (type == UnitType.AMBULANCE){
+            return IncidentType.MEDICAL;
+        }
+        if (type == UnitType.FIRE_ENGINE){
+            return IncidentType.FIRE;
+        }
+        if (type == UnitType.POLICE_CAR){
+            return IncidentType.CRIME;
+        }
+        return null;
+    }
+
+    public void setHOME(int new_home) {
+        this.home = new_home;
     }
 
     public int getHOME() {
-        return HOME;
+        return home;
     }
 
     public int getIncidentId() {
@@ -62,9 +74,5 @@ public abstract class Unit extends GridSpace{
     public void setLocation(int x_coord, int y_coord) {
     this.x_coord = x_coord;
     this.y_coord = y_coord;
-    }
-
-    public int getWORKTick() {
-        return WORKTick;
     }
 }
