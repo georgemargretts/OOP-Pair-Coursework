@@ -46,4 +46,12 @@ public abstract class Unit extends GridSpace{
         return status;
     }
 
+    public void setHOME(int HOME) {
+        this.HOME = HOME;
+    }
+
+    public void setLocation(int x_coord, int y_coord) {
+    this.x_coord = x_coord;
+    this.y_coord = y_coord;
+    }
 }

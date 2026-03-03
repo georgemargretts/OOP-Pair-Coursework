@@ -149,7 +149,7 @@ public class CityRescueImpl implements CityRescue {
                         };
                         new_unit.HOME = station.getID(); // Assigns a home to the unit (the station's Id)
                         units.add(new_unit);  // Added to units with unique Id
-                        station.incrementUnits();  // Update station
+                        station.incrementUnits();
                         return new_unit.getID();
                     } else {
                         throw new IllegalStateException("Null unit type");
@@ -176,7 +176,6 @@ public class CityRescueImpl implements CityRescue {
                             break;
                         }
                     }
-                    
                     if (station == null) {
                         throw new IllegalStateException("Unit's home station not found");
                     }
@@ -191,10 +190,46 @@ public class CityRescueImpl implements CityRescue {
         throw new IDNotRecognisedException("Unit ID not found");
     }
 
-    @Override //11
+    @Override //11 #done i think
     public void transferUnit(int unitId, int newStationId) throws IDNotRecognisedException, IllegalStateException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (int a = 0; a < units.size(); a++) { // loops through all units in units list
+            Unit unit = units.get(a); 
+            if (unitId == unit.getID() ) {
+                if (unit.getStatus() == UnitStatus.IDLE) {
+                    Station old_station = null; // Needs to exist before statements
+                    Station new_station = null; // Needs to exist before statements
+                    for (Station s : stations) { // Finds the units home
+                        if (s.getID() == unit.HOME) {
+                            old_station = s;
+                        }
+                        if (s.getID() == newStationId) {
+                            new_station = s;
+                        }
+                    }
+                    if (old_station == null) {
+                        throw new IllegalStateException("Unit's home station not found");
+                    }
+                    if (new_station == null) {
+                        throw new IllegalStateException("New station not found");
+                    }
+
+                    // Station new_station = stations.getID();
+                    if (new_station.getCurrentUnits() < new_station.getMaxUnits()) {
+                        unit.setHOME(newStationId);
+                        new_station.incrementUnits();  // Update station
+                        old_station.decrementUnits();
+                        int[] location = new_station.getLocation(); // Gets location of new station
+                        unit.setLocation(location[0], location[1]); // Moves unit to new station
+                        return;
+                    }   else {
+                    throw new IllegalStateException("Station already at capacity"); 
+                    }
+                } else {
+                    throw new IllegalStateException("Unit is busy");
+                }
+            }
+        }
+        throw new IDNotRecognisedException("Unit ID not found");
     }
 
     @Override //12
