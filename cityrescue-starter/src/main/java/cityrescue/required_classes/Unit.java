@@ -22,6 +22,7 @@ public abstract class Unit extends GridSpace{
     public static int nextID = 1;
     public int UnitID;
     public int home;
+    public int workTick = 0;
 
     //Constructors
     public Unit(int x_coord, int y_coord) {
@@ -74,5 +75,25 @@ public abstract class Unit extends GridSpace{
     public void setLocation(int x_coord, int y_coord) {
     this.x_coord = x_coord;
     this.y_coord = y_coord;
+    }
+
+    public int getWorkTick() {
+        return workTick;
+    }
+
+    public void decrementWorkTick() {
+        workTick -= 1;
+    }
+    
+    public void resetWorkTick() {
+        if (type == UnitType.AMBULANCE) {
+            workTick = 2;
+        }
+        if (type == UnitType.FIRE_ENGINE) {
+            workTick = 3;
+        }
+        if (type == UnitType.POLICE_CAR) {
+            workTick = 4;
+        }
     }
 }

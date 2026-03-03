@@ -149,7 +149,7 @@ public class CityRescueImpl implements CityRescue {
                             case POLICE_CAR -> new PoliceCar(location[0], location[1]);
                             default -> throw new InvalidUnitException("Invalid unit type");
                         };
-                        new_unit.HOME = station.getID(); // Assigns a home to the unit (the station's Id)
+                        new_unit.home = station.getID(); // Assigns a home to the unit (the station's Id)
                         units.add(new_unit);  // Added to units with unique Id
                         station.incrementUnits();
                         return new_unit.getID();
@@ -173,7 +173,7 @@ public class CityRescueImpl implements CityRescue {
 
                     Station station = null; // Needs to exist before statements
                     for (Station s : stations) { // Finds the units home
-                        if (s.getID() == unit.HOME) {
+                        if (s.getID() == unit.home) {
                             station = s;
                             break;
                         }
@@ -201,7 +201,7 @@ public class CityRescueImpl implements CityRescue {
                     Station old_station = null; // Needs to exist before statements
                     Station new_station = null; // Needs to exist before statements
                     for (Station s : stations) { // Finds the units home
-                        if (s.getID() == unit.HOME) {
+                        if (s.getID() == unit.home) {
                             old_station = s;
                         }
                         if (s.getID() == newStationId) {
@@ -269,7 +269,7 @@ public class CityRescueImpl implements CityRescue {
                     " LOC=(" + unit.x_coord + "," + unit.y_coord + ")" +
                     " STATUS=" + unit.getStatus() +
                     " INCIDENT=" + unit.getIncidentId() +
-                    " WORK=" + unit.getWORKTick();
+                    " WORK=" + unit.getWorkTick();
             }
         }
         throw new IDNotRecognisedException("Unit ID not found");
@@ -436,7 +436,7 @@ public class CityRescueImpl implements CityRescue {
                     if (incidents.get(b).getLocation() == units.get(a).getLocation()) { // if they are at the same location (e.g it arrived)
                         incidents.get(b).updateStatus(IncidentStatus.IN_PROGRESS); // Incident set to IN_PROGRESS
                         units.get(a).setStatus(UnitStatus.AT_SCENE); // Unit set to AT_SCENE
-                        incidents.get(b).resetWorkTick(); // resets the work tick to its correct value
+                        units.get(a).resetWorkTick(); // resets the work tick to its correct value
                     }
                 }
             }
@@ -490,7 +490,7 @@ public class CityRescueImpl implements CityRescue {
                 " LOC=(" + unit.x_coord + "," + unit.y_coord + ")" +
                 " STATUS=" + unit.getStatus() +
                 " INCIDENT=" + unit.getIncidentId() +
-                " WORK=" + unit.getWORKTick();
+                " WORK=" + unit.getWorkTick();
             statusDisplay.append(unitOutput).append("\n");
         }
         return statusDisplay.toString();

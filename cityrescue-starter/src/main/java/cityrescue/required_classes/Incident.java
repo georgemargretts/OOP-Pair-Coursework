@@ -16,7 +16,6 @@ public class Incident extends GridSpace{
     public IncidentStatus status = IncidentStatus.REPORTED;
     public int unit;
     public int ID;
-    public int workTick = 0;
 
     // Constructor
     public Incident(int x_coord, int y_coord, int severity, IncidentType type, int ID) {
@@ -53,25 +52,5 @@ public class Incident extends GridSpace{
 
     public int getUnit() {
         return unit;
-    }
-
-        public int getWorkTick() {
-        return workTick;
-    }
-
-    public void decrementWorkTick() {
-        workTick -= 1;
-    }
-    
-    public void resetWorkTick() {
-        if (type == IncidentType.MEDICAL) {
-            workTick = 2;
-        }
-        if (type == IncidentType.FIRE) {
-            workTick = 3;
-        }
-        if (type == IncidentType.CRIME) {
-            workTick = 4;
-        }
     }
 }
