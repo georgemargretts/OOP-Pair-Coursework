@@ -17,11 +17,12 @@ public abstract class Unit extends GridSpace{
     //Attributes
     public UnitStatus status = UnitStatus.IDLE;
     public UnitType type; // This will be overridden in the subclasses
+    public int currentIncident = -1;
     public IncidentType type_to_handle;
     public static int nextID = 1;
     public int UnitID;
     public int HOME;
-    public String WORK;
+    public int WORKTick = 0;
 
     //Constructors
     public Unit(int x_coord, int y_coord) {
@@ -34,7 +35,7 @@ public abstract class Unit extends GridSpace{
         this.UnitID = ID;
     }
 
-    public void setstatus(UnitStatus newstatus) {
+    public void setStatus(UnitStatus newstatus) {
         this.status = newstatus;
     }
 
@@ -50,8 +51,20 @@ public abstract class Unit extends GridSpace{
         this.HOME = HOME;
     }
 
+    public int getHOME() {
+        return HOME;
+    }
+
+    public int getIncidentId() {
+        return currentIncident;
+    }
+
     public void setLocation(int x_coord, int y_coord) {
     this.x_coord = x_coord;
     this.y_coord = y_coord;
+    }
+
+    public int getWORKTick() {
+        return WORKTick;
     }
 }

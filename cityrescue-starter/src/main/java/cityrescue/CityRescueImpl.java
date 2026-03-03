@@ -5,6 +5,7 @@ import cityrescue.exceptions.*;
 import cityrescue.required_classes.*;
 import cityrescue.required_classes.unit_subclasses.*;
 
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -232,22 +233,45 @@ public class CityRescueImpl implements CityRescue {
         throw new IDNotRecognisedException("Unit ID not found");
     }
 
-    @Override //12
+    @Override //12 #done
     public void setUnitOutOfService(int unitId, boolean outOfService) throws IDNotRecognisedException, IllegalStateException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (int a = 0; a < units.size(); a++) { // loops through all units in units list
+            Unit unit = units.get(a); 
+            if (unitId == unit.getID() ) {
+                switch(unit.getStatus()) {
+                            case IDLE -> {unit.setStatus(UnitStatus.OUT_OF_SERVICE); return;}
+                            case OUT_OF_SERVICE -> {unit.setStatus(UnitStatus.IDLE); return;}
+                            default -> throw new IllegalStateException("Invalid unit type");
+                }
+            }
+        }
+        throw new IDNotRecognisedException("Unit ID not found");
     }
 
-    @Override //13
+    @Override //13 #done
     public int[] getUnitIds() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        return units.stream()
+                    .mapToInt(Unit::getID)     // Convert each Unit to its ID
+                    .sorted()                  // Sort the IDs
+                    .toArray();                // Convert to array (list[])
     }
 
-    @Override //14
+    @Override //14 #done
+    // Example viewUnit() format U#2 TYPE=FIRE_ENGINE HOME=2 LOC=(3,1) STATUS=AT_SCENE INCIDENT=1 WORK=2
     public String viewUnit(int unitId) throws IDNotRecognisedException {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        for (int a = 0; a < units.size(); a++) { // loops through all units in units list
+            Unit unit = units.get(a); 
+            if (unitId == unit.getID() ) {
+                return "U#" + unit.getID() +
+                    " TYPE=" + unit.getType() +
+                    " HOME=" + unit.getHOME() +
+                    " LOC=(" + unit.x_coord + "," + unit.y_coord + ")" +
+                    " STATUS=" + unit.getStatus() +
+                    " INCIDENT=" + unit.getIncidentId() +
+                    " WORK=" + unit.getWORKTick();
+            }
+        }
+        throw new IDNotRecognisedException("Unit ID not found");
     }
 
     @Override //15
