@@ -403,7 +403,43 @@ public class CityRescueImpl implements CityRescue {
 
     @Override //22
     public String getStatus() {
-        // TODO: implement
-        throw new UnsupportedOperationException("Not implemented yet");
+        StringBuilder statusDisplay = new StringBuilder();
+        
+        statusDisplay.append("Tick=").append(tick).append("\n");
+
+        statusDisplay.append("STATIONS=").append(stations.size())
+
+            .append(" UNITS=").append(units.size())
+            .append(" INCIDENTS=").append(incidents.size())
+            .append(" OBSTACLES=").append(city_map.getObstacleCount()).append("\n");
+
+        statusDisplay.append("INCIDENTS").append("\n");
+
+        for (int a = 0; a < incidents.size(); a++) {
+            int current_ID = incidents.get(a).getID(); // gets the id of the current station
+            IncidentType type = incidents.get(a).getType();
+            int severity = incidents.get(a).getSeverity();
+            int[] location = incidents.get(a).getLocation();
+            IncidentStatus status = incidents.get(a).getStatus();
+            int unit = incidents.get(a).getUnit();
+            String output = String.format(
+                "I#%d TYPE=%s SEV=%d LOC=(%d, %d) STATUS=%s UNIT=%d",
+                current_ID, type, severity, location, status, unit    
+            );
+            statusDisplay.append(output).append("\n");
+        }
+
+        statusDisplay.append("UNITS").append("\n");    
+        for (int a = 0; a < units.size(); a++) { // loops through all units in units list
+            Unit unit = units.get(a); 
+            String unitOutput =  "U#" + unit.getID() +
+                " TYPE=" + unit.getType() +
+                " HOME=" + unit.getHOME() +
+                " LOC=(" + unit.x_coord + "," + unit.y_coord + ")" +
+                " STATUS=" + unit.getStatus() +
+                " INCIDENT=" + unit.getIncidentId() +
+                " WORK=" + unit.getWORKTick();
+            statusDisplay.append(unitOutput).append("\n");
+        }
     }
 }

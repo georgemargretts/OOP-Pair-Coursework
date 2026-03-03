@@ -33,4 +33,18 @@ public class CityMap{
     public boolean checkForObstacle(int x_coord, int y_coord) {
         return grid[x_coord][y_coord];
     }
+
+    public int getObstacleCount() {
+        int count = 0;
+
+        for (int x = 0; x < city_width; x++) {
+            for (int y = 0; y < city_height; y++) {
+                if (grid[x][y]) {   // if obstacle exists
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
 }
