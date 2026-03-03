@@ -7,6 +7,7 @@ import cityrescue.required_classes.unit_subclasses.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * CityRescueImpl (Starter)
@@ -305,7 +306,7 @@ public class CityRescueImpl implements CityRescue {
 
     @Override //17
     public void escalateIncident(int incidentId, int newSeverity) throws IDNotRecognisedException, InvalidSeverityException, IllegalStateException {
-        if (newSeverity < 1 && newSeverity > 5) {
+        if (newSeverity < 1 || newSeverity > 5) {
             throw new InvalidSeverityException("Invalid severity change");
         }
         for (int a = 0; a < incidents.size(); a++) { // loops through all stations in station list
@@ -362,20 +363,35 @@ public class CityRescueImpl implements CityRescue {
         Set incident to DISPATCH
         Set chosen Unit to EN_ROUTE
         */
-        // gets a list of the REPORTED incident ID's
-        int[] list_of_ids;
-        list_of_ids = new int[incidents.size()];
-        for (int a = 0; a < incidents.size(); a++) {
-            if (incidents.get(a).getStatus().equals(IncidentStatus.REPORTED)) {
-                int current_ID = incidents.get(a).getID();
-            list_of_ids[a] = current_ID;
-            }
-        }
-        Arrays.sort(list_of_ids);
 
-        for (int a = 0; a < list_of_ids.length; a++) { //loops through each reported incident
-            
-            if (IncidentStatus.REPORTED.equals(incidents.get(a).getStatus())); // if the status of the current incident is reported
+        // sorts the list of incidents by ID
+        incidents.sort(Comparator.comparing(Incident::getID));
+
+        for (int a = 0; a < incidents.size(); a++) { //loops through each incident
+            if (IncidentStatus.REPORTED.equals(incidents.get(a).getStatus())) { // if the status of the current incident is reported
+                // run steps 1, 2 and 3 as seen above
+
+                int[] incident_coords = incidents.get(a).getLocation();
+                int value_of_lowest_md = 100;
+                int index_of_lowest_md = 0;
+
+                for (int b = 0; a < units.size(); a++) { //loops through each unit to find closest one
+                    // check if right type
+                    if (units.get(b).getStatus().equals(incidents.get(a).getType())) { // checks if the 2 enums are the same
+                        // find manhattan distance
+                        // manhattan distance (|𝑥! − 𝑥"| + |𝑦! − 𝑦"|)
+                        int[] unit_coords = units.get(b).getLocation();
+                        int manhattan_distance = Math.abs(incident_coords[0] - incident_coords[1]) + Math.abs(unit_coords[0] - unit_coords[1]);
+
+                        if (manhattan_distance < value_of_lowest_md) { // if manhattan distance better (lower) replace values
+                            value_of_lowest_md = manhattan_distance;
+                            index_of_lowest_md = b;
+                        }
+                    }
+                }
+                units.get(index_of_lowest_md).setStatus(UnitStatus.EN_ROUTE); //sets chosen unit to en-route
+                incidents.get(a).updateStatus(IncidentStatus.DISPATCHED); //sets incident to dispatched
+            }
         }
     }
 
