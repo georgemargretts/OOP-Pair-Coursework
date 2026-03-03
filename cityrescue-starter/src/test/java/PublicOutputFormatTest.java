@@ -25,7 +25,7 @@ public class PublicOutputFormatTest {
     @Test
     void viewUnit_and_viewIncident_haveStablePrefixes() throws Exception {
         int st = cr.addStation("A", 0, 0);
-        int u = cr.addUnit(st, UnitType.FIRE_ENGINE);
+        int u = cr.addUnit(st, UnitType.FIRE);
         int i = cr.reportIncident(IncidentType.FIRE, 3, 4, 4);
 
         // Output prefix must match the coursework specification examples
