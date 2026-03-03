@@ -272,7 +272,8 @@ public class CityRescueImpl implements CityRescue {
             }
         }
         throw new IDNotRecognisedException("Unit ID not found");
-
+    }
+    
     @Override //15
     public int reportIncident(IncidentType type, int severity, int x, int y) throws InvalidSeverityException, InvalidLocationException {
         if (severity < 1 || severity > 5) { // Is the severity valid
