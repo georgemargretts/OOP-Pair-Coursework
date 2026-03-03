@@ -81,7 +81,7 @@ public class CityRescueImpl implements CityRescue {
             throw new InvalidLocationException("Location is invalid");
         }
         if (stations.size() < MAX_STATIONS) { // Can we create another station without going over the limit
-            Station new_station = new Station(name, x, y, station_ID++); // creates the station
+            Station new_station = new Station(name, x, y, 1); // creates the station
             stations.add(new_station);
             return new_station.getID();
         } else {
@@ -457,7 +457,7 @@ public class CityRescueImpl implements CityRescue {
     public String getStatus() {
         StringBuilder statusDisplay = new StringBuilder();
         
-        statusDisplay.append("Tick=").append(tick).append("\n");
+        statusDisplay.append("TICK=").append(tick).append("\n");
 
         statusDisplay.append("STATIONS=").append(stations.size())
 
@@ -493,6 +493,7 @@ public class CityRescueImpl implements CityRescue {
                 " WORK=" + unit.getWorkTick();
             statusDisplay.append(unitOutput).append("\n");
         }
+        System.out.println(statusDisplay.toString());
         return statusDisplay.toString();
     }
 }
