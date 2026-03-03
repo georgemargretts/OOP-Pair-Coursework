@@ -8,7 +8,7 @@ import cityrescue.enums.UnitType;
 
 public class Ambulance extends Unit {
     // Attributes
-    public UnitType type = UnitType.AMBULANCE; //Overrides the type
+    public UnitType type = UnitType.MEDICAL; //Overrides the type
 
     // Constructor
     public Ambulance(int x_coord, int y_coord) {
