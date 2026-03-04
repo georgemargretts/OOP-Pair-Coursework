@@ -62,7 +62,7 @@ public class CityRescueImpl implements CityRescue {
 
     @Override //3 #done
     public void addObstacle(int x, int y) throws InvalidLocationException {
-        if ((x < 0 || x >= width) || (y < 0 || y < height)) { // Is the location valid
+        if ((x < 0 || x >= width) || (y < 0 || y >= height)) { // Is the location valid
             throw new InvalidLocationException("Location is invalid");
         }
         if ((0 <= x && x < width) && (0 <= y && y < height)) {
@@ -72,7 +72,7 @@ public class CityRescueImpl implements CityRescue {
 
     @Override //4 #done
     public void removeObstacle(int x, int y) throws InvalidLocationException {
-        if ((x < 0 || x >= width) || (y < 0 || y < height)) { // Is the location valid
+        if ((x < 0 || x >= width) || (y < 0 || y >= height)) { // Is the location valid
             throw new InvalidLocationException("Location is invalid");
         }
         if ((0 <= x && x < width) && (0 <= y && y < height)) {
@@ -85,7 +85,7 @@ public class CityRescueImpl implements CityRescue {
         if ((name.equals(""))) { // Does the name equal ""
             throw new InvalidNameException("Name is invalid");
         }
-        if ((x < 0 || x >= width) || (y < 0 || y < height) || (city_map.checkForObstacle(x, y))) { // Is the location valid
+        if ((x < 0 || x >= width) || (y < 0 || y >= height) || (city_map.checkForObstacle(x, y))) { // Is the location valid
             throw new InvalidLocationException("Location is invalid");
         }
         if (stations.size() < MAX_STATIONS) { // Can we create another station without going over the limit
