@@ -76,6 +76,10 @@ public abstract class Unit extends GridSpace {
         return currentIncident;
     }
 
+    public void setIncidentID(int new_incident_id) {
+        currentIncident = new_incident_id;
+    }
+
     public void setLocation(int x_coord, int y_coord) {
     this.x_coord = x_coord;
     this.y_coord = y_coord;

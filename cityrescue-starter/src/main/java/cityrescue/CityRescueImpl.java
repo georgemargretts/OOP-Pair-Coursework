@@ -403,6 +403,7 @@ public class CityRescueImpl implements CityRescue {
                 }
                 if (index_of_lowest_md != -1) {
                     units.get(index_of_lowest_md).setStatus(UnitStatus.EN_ROUTE); //sets chosen unit to en-route
+                    units.get(index_of_lowest_md).setIncidentID(incidents.get(a).getID()); // sets the units incidentID to the correct ID
                     incidents.get(a).updateStatus(IncidentStatus.DISPATCHED); //sets incident to dispatched
                 }
             }
@@ -434,6 +435,55 @@ public class CityRescueImpl implements CityRescue {
 
         // make units move
 
+        // sets directions
+        int[] x_change = {-1, 0, 1, 0}; // N E S W
+        int[] y_change = {0, 1, 0, -1};
+
+        for (int a = 0; a < units.size(); a++) { // loop through every unit
+            if (units.get(a).getStatus() == UnitStatus.EN_ROUTE) {
+
+                // find the location of the incident it is going to
+                int incidentID = units.get(a).getIncidentId();
+                int[] incident_coords = {0, 0};
+                for (int c = 0; c < incidents.size(); c++) { // find the incident location the unit is responding to
+                    if (incidents.get(c).getID() == incidentID) {
+                        incident_coords = incidents.get(c).getLocation();
+                    }
+                }
+
+                int[] best_legal_move = {0, 0}; //sets the best move to 0, 0
+                int[] current_location = units.get(a).getLocation();
+
+                int current_md = Math.abs(incident_coords[0] - current_location[0]) + Math.abs(incident_coords[1] - current_location[1]);
+
+                for (int b = 0; b < 4; b++) { //loop through each possible move
+                    int new_x = current_location[0] + x_change[b];
+                    int new_y = current_location[1] + y_change[b];
+
+                    // is the move on the board?
+                    if (new_x < 0 || new_x > width || new_y < 0 || new_y > height) {
+                        continue;
+                    }
+
+                    // is there an obstical in the way?
+                    if (city_map.checkForObstacle(new_x, new_y)) {
+                        continue;
+                    }
+
+                    // find manhattan distance
+                    int new_md = Math.abs(incident_coords[0] - new_x) + Math.abs(incident_coords[1] - new_y);
+                    if (new_md < current_md) {
+                        current_md = new_md;
+                        best_legal_move[0] = new_x;
+                        best_legal_move[1] = new_y;
+                    } else if ((new_md == current_md) && (best_legal_move[0] == 0 && best_legal_move[1] == 0)) { // if it is equal value and a best move has not been chosen
+                        best_legal_move[0] = new_x;
+                        best_legal_move[1] = new_y;
+                    }
+                }
+            }
+        }
+
         // mark arrivals
         for (int a = 0; a < units.size(); a++) { // loops through each unit
             int incident_goal_id = units.get(a).getIncidentId(); // id of the incident it wants to get to
@@ -451,12 +501,29 @@ public class CityRescueImpl implements CityRescue {
         // process on-scene work
         for (int a = 0; a < incidents.size(); a++) { // loops through each incident
             if (incidents.get(a).getStatus() == IncidentStatus.IN_PROGRESS) { // if the incident is in progress
-
+                int unit_id = incidents.get(a).getUnit();
+                for (int b = 0; a < units.size(); b++) {
+                    if (unit_id == units.get(b).getID()) { // if the ID of the unit at the incident is the same as the Unit we are currently looking at
+                        units.get(b).decrementWorkTick();
+                    }
+                }
             }
         }
 
         // resolve completed incidents
-
+        for (int a = 0; a < incidents.size(); a++) { // loops through each incident
+            if (incidents.get(a).getStatus() == IncidentStatus.IN_PROGRESS) { // if the incident is in progress
+                int unit_id = incidents.get(a).getUnit();
+                for (int b = 0; a < units.size(); b++) {
+                    if (unit_id == units.get(b).getID()) { // if the ID of the unit at the incident is the same as the Unit we are currently looking at
+                        if (units.get(b).getWorkTick() == 0) {
+                            units.get(b).setStatus(UnitStatus.IDLE);
+                            incidents.get(a).updateStatus(IncidentStatus.RESOLVED);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override //22
