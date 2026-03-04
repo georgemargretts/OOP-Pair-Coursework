@@ -16,17 +16,20 @@ public class Main {
         cr.initialise(6, 6);
 
         int s = cr.addStation("A", 0, 0);
-        int u1 = cr.addUnit(s, UnitType.POLICE_CAR);
-        int u2 = cr.addUnit(s, UnitType.POLICE_CAR);
+        int u = cr.addUnit(s, UnitType.AMBULANCE);
 
-        int i1 = cr.reportIncident(IncidentType.CRIME, 2, 2, 2);
-
+        int i = cr.reportIncident(IncidentType.MEDICAL, 1, 0, 1);
         cr.dispatch();
 
-        String inc = cr.viewIncident(i1);
+        cr.tick(); // should arrive at (0,1) in one tick
+        String a = cr.viewUnit(u);
+        System.out.println(a);
 
-        System.out.println(u1);
-        System.out.println(u2);
-        System.out.println(inc);
+        cr.tick();
+        cr.tick();
+        String b = cr.viewIncident(i);
+        String c = cr.viewUnit(u);
+        System.out.println(b);
+        System.out.println(c);
     }
 }

@@ -90,7 +90,8 @@ public abstract class Unit extends GridSpace {
     }
 
     public void decrementWorkTick() {
-        workTick -= 1;
+        workTick = workTick - 1;
+        System.out.println("The work tick is now:" + workTick);
     }
     
     public void resetWorkTick() {
