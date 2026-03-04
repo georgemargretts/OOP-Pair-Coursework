@@ -27,4 +27,10 @@ public class GridSpace{
         int[] location = {x_coord, y_coord};
         return location;
     }
+
+    public String getStrLocation() {
+        String str_location = "(";
+        str_location = str_location + Integer.toString(x_coord) + "," + Integer.toString(y_coord) + ")";
+        return str_location;
+    }
 }

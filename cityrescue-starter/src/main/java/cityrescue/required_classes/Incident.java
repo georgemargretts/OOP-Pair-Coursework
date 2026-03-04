@@ -14,7 +14,7 @@ public class Incident extends GridSpace{
     public IncidentType type; // overrides type
     public int severity;
     public IncidentStatus status = IncidentStatus.REPORTED;
-    public int unit;
+    public int unit = -1;
     public static int nextID = 1;
     public int ID;
 

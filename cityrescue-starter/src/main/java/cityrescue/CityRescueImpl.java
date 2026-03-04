@@ -18,10 +18,6 @@ import java.util.Comparator;
 
 public class CityRescueImpl implements CityRescue {
 
-    public static void main(String[] args) {
-        System.out.println("Hello");
-    }
-
     // We need to create attributes here
 
     public int width; //creates city width
@@ -274,7 +270,7 @@ public class CityRescueImpl implements CityRescue {
                 return "U#" + unit.getID() +
                     " TYPE=" + unit.getType() +
                     " HOME=" + unit.getHome() +
-                    " LOC=(" + unit.x_coord + "," + unit.y_coord + ")" +
+                    " LOC=" + unit.getStrLocation() +
                     " STATUS=" + unit.getStatus() +
                     " INCIDENT=" + unit.getIncidentId() +
                     " WORK=" + unit.getWorkTick();
@@ -342,15 +338,14 @@ public class CityRescueImpl implements CityRescue {
     public String viewIncident(int incidentId) throws IDNotRecognisedException {
         // format : I#1 TYPE=FIRE SEV=4 LOC=(3,1) STATUS=IN_PROGRESS UNIT=2
         for (int a = 0; a < incidents.size(); a++) {
-            Incident incident = incidents.get(a);
             int current_ID = incidents.get(a).getID(); // gets the id of the current station
             if (current_ID == incidentId) {
-                return "I#" + incident.getID() +
-                    " TYPE=" + incident.getType() +
-                    " HOME=" + incident.getSeverity() +
-                    " LOC=" + incident.getLocation() +
-                    " STATUS=" + incident.getStatus() +
-                    " UNIT=" + incident.getUnit();
+                return "I#" + incidents.get(a).getID() +
+                    " TYPE=" + incidents.get(a).getType() +
+                    " SEV=" + incidents.get(a).getSeverity() +
+                    " LOC=" + incidents.get(a).getStrLocation() +
+                    " STATUS=" + incidents.get(a).getStatus() +
+                    " UNIT=" + incidents.get(a).getUnit();
             }
         }
         throw new IDNotRecognisedException("ID not found");
@@ -408,6 +403,7 @@ public class CityRescueImpl implements CityRescue {
                     units.get(index_of_lowest_md).setStatus(UnitStatus.EN_ROUTE); //sets chosen unit to en-route
                     units.get(index_of_lowest_md).setIncidentID(incidents.get(a).getID()); // sets the units incidentID to the correct ID
                     incidents.get(a).updateStatus(IncidentStatus.DISPATCHED); //sets incident to dispatched
+                    incidents.get(a).updateUnit(units.get(index_of_lowest_md).getID());
                 }
             }
         }
