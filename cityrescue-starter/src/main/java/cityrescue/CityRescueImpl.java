@@ -41,14 +41,13 @@ public class CityRescueImpl implements CityRescue {
     public int counters = 0;
     public CityMap city_map;
 
-    public int station_ID = 1;
-    public int unit_ID = 1;
-    public int incident_id = 1;
-
     // Methods
 
     @Override //1
     public void initialise(int width, int height) throws InvalidGridException {
+        if (width < 0 || height < 0) {
+            throw new InvalidGridException("Invalid grid size");
+        }
         city_map = new CityMap(width, height);
     }
 
@@ -60,6 +59,9 @@ public class CityRescueImpl implements CityRescue {
 
     @Override //3 #done
     public void addObstacle(int x, int y) throws InvalidLocationException {
+        if ((x < 0 || x > width) || (y < 0 || y < height)) { // Is the location valid
+            throw new InvalidLocationException("Location is invalid");
+        }
         if ((0 <= x && x < width) && (0 <= y && y < height)) {
             city_map.updateObstacle(true, x, y);
         }
@@ -67,6 +69,9 @@ public class CityRescueImpl implements CityRescue {
 
     @Override //4 #done
     public void removeObstacle(int x, int y) throws InvalidLocationException {
+        if ((x < 0 || x > width) || (y < 0 || y < height)) { // Is the location valid
+            throw new InvalidLocationException("Location is invalid");
+        }
         if ((0 <= x && x < width) && (0 <= y && y < height)) {
             city_map.updateObstacle(false, x, y);
         }
@@ -77,15 +82,15 @@ public class CityRescueImpl implements CityRescue {
         if ((name.equals(""))) { // Does the name equal ""
             throw new InvalidNameException("Name is invalid");
         }
-        if ((0 <= x && x < width) && (0 <= y && y < height) && (city_map.checkForObstacle(x, y))) { // Is the location valid
+        if ((x < 0 || x > width) || (y < 0 || y < height) || (city_map.checkForObstacle(x, y))) { // Is the location valid
             throw new InvalidLocationException("Location is invalid");
         }
         if (stations.size() < MAX_STATIONS) { // Can we create another station without going over the limit
-            Station new_station = new Station(name, x, y, 1); // creates the station
+            Station new_station = new Station(name, x, y); // creates the station
             stations.add(new_station);
             return new_station.getID();
         } else {
-            throw new CapacityExceededException("Max number os stations reached");
+            throw new CapacityExceededException("Max number of stations reached");
         }
     }
 
@@ -144,9 +149,9 @@ public class CityRescueImpl implements CityRescue {
                     if (type != null) {
                         int[] location = station.getLocation();
                         Unit new_unit = switch(type) {
-                            case AMBULANCE -> new Ambulance(location[0], location[1]);
-                            case FIRE_ENGINE -> new FireEngine(location[0], location[1]);
-                            case POLICE_CAR -> new PoliceCar(location[0], location[1]);
+                            case AMBULANCE -> new Ambulance(location[0], location[1], UnitType.AMBULANCE);
+                            case FIRE_ENGINE -> new FireEngine(location[0], location[1], UnitType.FIRE_ENGINE);
+                            case POLICE_CAR -> new PoliceCar(location[0], location[1], UnitType.POLICE_CAR);
                             default -> throw new InvalidUnitException("Invalid unit type");
                         };
                         new_unit.home = station.getID(); // Assigns a home to the unit (the station's Id)
@@ -217,7 +222,7 @@ public class CityRescueImpl implements CityRescue {
 
                     // Station new_station = stations.getID();
                     if (new_station.getCurrentUnits() < new_station.getMaxUnits()) {
-                        unit.setHOME(newStationId);
+                        unit.setHome(newStationId);
                         new_station.incrementUnits();  // Update station
                         old_station.decrementUnits();
                         int[] location = new_station.getLocation(); // Gets location of new station
@@ -265,7 +270,7 @@ public class CityRescueImpl implements CityRescue {
             if (unitId == unit.getID() ) {
                 return "U#" + unit.getID() +
                     " TYPE=" + unit.getType() +
-                    " HOME=" + unit.getHOME() +
+                    " HOME=" + unit.getHome() +
                     " LOC=(" + unit.x_coord + "," + unit.y_coord + ")" +
                     " STATUS=" + unit.getStatus() +
                     " INCIDENT=" + unit.getIncidentId() +
@@ -284,7 +289,7 @@ public class CityRescueImpl implements CityRescue {
             throw new InvalidLocationException("Location is invalid");
         }
         if (type != null) {
-            Incident new_incident = new Incident(x, y, severity, type, incident_id++);
+            Incident new_incident = new Incident(x, y, severity, type);
             incidents.add(new_incident);
             return new_incident.getID();
         } else {
@@ -334,18 +339,15 @@ public class CityRescueImpl implements CityRescue {
     public String viewIncident(int incidentId) throws IDNotRecognisedException {
         // format : I#1 TYPE=FIRE SEV=4 LOC=(3,1) STATUS=IN_PROGRESS UNIT=2
         for (int a = 0; a < incidents.size(); a++) {
+            Incident incident = incidents.get(a);
             int current_ID = incidents.get(a).getID(); // gets the id of the current station
             if (current_ID == incidentId) {
-                IncidentType type = incidents.get(a).getType();
-                int severity = incidents.get(a).getSeverity();
-                int[] location = incidents.get(a).getLocation();
-                IncidentStatus status = incidents.get(a).getStatus();
-                int unit = incidents.get(a).getUnit();
-                String output = String.format(
-                    "I#%d TYPE=%s SEV=%d LOC=(%d, %d) STATUS=%s UNIT=%d",
-                    incidentId, type, severity, location, status, unit    
-                );
-                return output;
+                return "I#" + incident.getID() +
+                    " TYPE=" + incident.getType() +
+                    " HOME=" + incident.getSeverity() +
+                    " LOC=" + incident.getLocation() +
+                    " STATUS=" + incident.getStatus() +
+                    " UNIT=" + incident.getUnit();
             }
         }
         throw new IDNotRecognisedException("ID not found");
@@ -373,16 +375,18 @@ public class CityRescueImpl implements CityRescue {
 
                 int[] incident_coords = incidents.get(a).getLocation();
                 int value_of_lowest_md = 100;
-                int index_of_lowest_md = 0;
+                int index_of_lowest_md = -1;
 
-                for (int b = 0; a < units.size(); a++) { //loops through each unit to find closest one
+                for (int b = 0; b < units.size(); b++) { //loops through each unit to find closest one
                     // check if right type
                     IncidentType needed_type = units.get(b).getIncidentType();
-                    if (needed_type == incidents.get(a).getType()) { // checks if the 2 enums are the same
+
+                    if (needed_type == incidents.get(a).getType() && units.get(b).getStatus() == UnitStatus.IDLE) { // checks if the 2 enums are the same and the unit is idle
                         // find manhattan distance
                         // manhattan distance (|𝑥! − 𝑥"| + |𝑦! − 𝑦"|)
+
                         int[] unit_coords = units.get(b).getLocation();
-                        int manhattan_distance = Math.abs(incident_coords[0] - incident_coords[1]) + Math.abs(unit_coords[0] - unit_coords[1]);
+                        int manhattan_distance = Math.abs(incident_coords[0] - unit_coords[0]) + Math.abs(incident_coords[1] - unit_coords[1]);
 
                         if (manhattan_distance == value_of_lowest_md) { // if we have a tie
                             int ID1 = units.get(index_of_lowest_md).getID();
@@ -397,8 +401,10 @@ public class CityRescueImpl implements CityRescue {
                         }
                     }
                 }
-                units.get(index_of_lowest_md).setStatus(UnitStatus.EN_ROUTE); //sets chosen unit to en-route
-                incidents.get(a).updateStatus(IncidentStatus.DISPATCHED); //sets incident to dispatched
+                if (index_of_lowest_md != -1) {
+                    units.get(index_of_lowest_md).setStatus(UnitStatus.EN_ROUTE); //sets chosen unit to en-route
+                    incidents.get(a).updateStatus(IncidentStatus.DISPATCHED); //sets incident to dispatched
+                }
             }
         }
     }
@@ -431,7 +437,7 @@ public class CityRescueImpl implements CityRescue {
         // mark arrivals
         for (int a = 0; a < units.size(); a++) { // loops through each unit
             int incident_goal_id = units.get(a).getIncidentId(); // id of the incident it wants to get to
-            for (int b = 0; a < incidents.size(); a++) { // loops through each incident
+            for (int b = 0; b < incidents.size(); b++) { // loops through each incident
                 if (incident_goal_id == incidents.get(b).getID()) { // if the incident is the one the unit wants to get to
                     if (incidents.get(b).getLocation() == units.get(a).getLocation()) { // if they are at the same location (e.g it arrived)
                         incidents.get(b).updateStatus(IncidentStatus.IN_PROGRESS); // Incident set to IN_PROGRESS
@@ -486,7 +492,7 @@ public class CityRescueImpl implements CityRescue {
             Unit unit = units.get(a); 
             String unitOutput =  "U#" + unit.getID() +
                 " TYPE=" + unit.getType() +
-                " HOME=" + unit.getHOME() +
+                " HOME=" + unit.getHome() +
                 " LOC=(" + unit.x_coord + "," + unit.y_coord + ")" +
                 " STATUS=" + unit.getStatus() +
                 " INCIDENT=" + unit.getIncidentId() +

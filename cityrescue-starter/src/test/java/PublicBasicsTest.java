@@ -2,7 +2,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
 import cityrescue.*;
-import cityrescue.enums.*;
+// import cityrescue.enums.*;
 import cityrescue.exceptions.*;
 
 public class PublicBasicsTest {
